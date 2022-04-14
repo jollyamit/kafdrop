@@ -59,6 +59,14 @@ else
   rm $KAFKA_KEYSTORE_FILE |& > /dev/null | true
 fi
 
+SSL_KEY_STORE=${SSL_KEY_STORE:-ssl.key.store}
+if [ "$SSL_KEY_STORE_VAL_B64" != "" ]; then
+	echo Writing ssl keystore into $SSL_KEY_STORE
+	echo "$SSL_KEY_STORE_VAL_B64" | base64 --decode --ignore-garbage > $SSL_KEY_STORE
+else
+	rm $SSL_KEY_STORE |& > /dev/null | true
+fi
+
 ARGS="--add-opens=java.base/sun.nio.ch=ALL-UNNAMED -Xss256K \
      $JMX_ARGS \
      $HEAP_ARGS \
